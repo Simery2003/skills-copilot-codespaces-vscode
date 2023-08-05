@@ -1,30 +1,25 @@
-// create web server// 1. import module
-const http = require('http');
-const url = require('url');
-const queryString = require('querystring');
-
-// 2. create web server
-const app = http.createServer((req, res) => {
-  // 2.1 get request url
-  const { pathname, query } = url.parse(req.url, true);
-  // 2.2 get request method
-  const method = req.method.toLowerCase();
-
-  // 2.3 set response header
-  res.setHeader('content-type', 'application/json;charset=utf-8');
-
-  // 2.4 set response data
-  const resData = {
-    pathname,
-    query,
-    method
-  };
-
-  // 2.5 response
-  res.end(JSON.stringify(resData));
+// create web server
+// create a web server
+const express = require('express');
+const app = express();
+//const cors = require('cors');
+const bodyParser = require('body-parser');
+const port = 3000;
+//const { Pool } = require('pg');
+//const pool = new Pool({
+//  connectionString: process.env.DATABASE_URL,
+//  ssl: true
+//});
+//app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+//app.use(express.static('public'));
+//app.use(express.static(__dirname + '/public'));
+app.post('/comments', function(req, res) {
+  console.log(req.body);
+  res.send(req.body);
 });
-
-// 3. listen port
-app.listen(3000, () => {
-  console.log('server is running at http://localhost:3000');
-}  );
+app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+//app.listen(process.env.PORT || 3000, function(){
+//  console.log('Your node js server is running');
+//});
