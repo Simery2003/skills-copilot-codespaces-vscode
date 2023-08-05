@@ -26,4 +26,5 @@ const app = http.createServer((req, res) => {
 
 // 3. listen port
 app.listen(3000, () => {
-  console.log('server is running at http://
+  console.log('server is running at http://localhost:3000');
+}  );
