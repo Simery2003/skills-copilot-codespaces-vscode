@@ -1,25 +1,31 @@
 // create web server
-// create a web server
-const express = require('express');
-const app = express();
-//const cors = require('cors');
-const bodyParser = require('body-parser');
-const port = 3000;
-//const { Pool } = require('pg');
-//const pool = new Pool({
-//  connectionString: process.env.DATABASE_URL,
-//  ssl: true
-//});
-//app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-//app.use(express.static('public'));
-//app.use(express.static(__dirname + '/public'));
-app.post('/comments', function(req, res) {
-  console.log(req.body);
-  res.send(req.body);
+// run server: node comments.js
+// open browser: http://localhost:3000
+// stop server: ctrl + c
+
+// load module
+var http = require('http');
+var fs = require('fs');
+var qs = require('querystring');
+
+// create server
+var server = http.createServer(function(req, res) {
+    if (req.method == 'GET') {
+        res.writeHead(200, {'Content-Type': 'text/html'});
+        res.end(fs.readFileSync('./comments.html'));
+    } else if (req.method == 'POST') {
+        var body = '';
+        req.on('data', function(data) {
+            body += data;
+        });
+        req.on('end', function() {
+            var post = qs.parse(body);
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            res.end('Your comment is: ' + post['comment']);
+        });
+    }
 });
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
-//app.listen(process.env.PORT || 3000, function(){
-//  console.log('Your node js server is running');
-//});
+
+// listen port
+server.listen(3000);
+console.log('Server running at http://localhost:3000');
